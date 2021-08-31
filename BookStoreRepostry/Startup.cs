@@ -37,6 +37,7 @@ namespace BookStoreRepostry
                 options.UseSqlServer(Configuration.GetConnectionString("SqlCon2019"));
             });
 
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookStoreDBContext>();
         }
@@ -61,6 +62,7 @@ namespace BookStoreRepostry
 
 
             app.UseAuthorization();
+        
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
