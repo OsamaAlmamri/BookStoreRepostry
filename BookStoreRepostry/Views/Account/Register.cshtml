@@ -1,14 +1,14 @@
 ﻿@model BookStoreRepostry.ViewModels.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Register";
 }
 <!--begin::Authentication - Sign-up -->
 <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(~/assets/media/illustrations/development-hd.png)">
     <!--begin::Content-->
     <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
         <!--begin::Logo-->
-        <a href="../../demo1/dist/index.html" class="mb-12">
+        <a asp-controller="Dashboard" asp-action="Index" class="mb-12">
             <img alt="Logo" src="~/assets/media/logos/logo-2-dark.svg" class="h-45px" />
         </a>
         <!--end::Logo-->
@@ -28,7 +28,7 @@
                     </div>
                     <!--end::Link-->
                 </div>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger"></div>
                 <!--end::Heading-->
                 <!--begin::Action-->
                 <button type="button" class="btn btn-light-primary fw-bolder w-100 mb-10">
@@ -47,7 +47,8 @@
                     <!--begin::Col-->
                     <div class="col-xl-12">
                         <label class="form-label fw-bolder text-dark fs-6" asp-for="UserName"></label>
-                        <input class="form-control form-control-lg form-control-solid" asp-for="UserName" type="text" placeholder="" name="first-name" autocomplete="off" />
+                        <input class="form-control form-control-lg form-control-solid" asp-for="UserName" type="text" placeholder="" name="UserName" autocomplete="off" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <!--end::Col-->
                 </div>
@@ -56,6 +57,7 @@
                 <div class="fv-row mb-7">
                     <label class="form-label fw-bolder text-dark fs-6" asp-for="Email"></label>
                     <input class="form-control form-control-lg form-control-solid" type="email" placeholder="" asp-for="Email" name="email" autocomplete="off" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
@@ -72,6 +74,7 @@
                                 <i class="bi bi-eye-slash fs-2"></i>
                                 <i class="bi bi-eye fs-2 d-none"></i>
                             </span>
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <!--end::Input wrapper-->
                         <!--begin::Meter-->
@@ -92,7 +95,8 @@
                 <!--begin::Input group-->
                 <div class="fv-row mb-5">
                     <label class="form-label fw-bolder text-dark fs-6" asp-for="ConfirmPassword"></label>
-                    <input class="form-control form-control-lg form-control-solid" type="password" asp-for="ConfirmPassword" placeholder="" name="confirm-password" autocomplete="off" />
+                    <input class="form-control form-control-lg form-control-solid" type="password" asp-for="ConfirmPassword" placeholder="" name="ConfirmPassword" autocomplete="off" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
@@ -108,7 +112,7 @@
                 <!--end::Input group-->
                 <!--begin::Actions-->
                 <div class="text-center">
-                    <button type="button" id="kt_sign_up_submit" class="btn btn-lg btn-primary">
+                    <button type="submit" id="kt_sign_up_submit" class="btn btn-lg btn-primary">
                         <span class="indicator-label">Submit</span>
                         <span class="indicator-progress">
                             Please wait...
@@ -139,9 +143,97 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <!--begin::Page Custom Javascript(used by this page)-->
-    <script src="~/assets/js/custom/authentication/sign-up/general.js"></script>
 
+@*<script>
+    newFunction();
+
+function newFunction() {
+    "use strict";
+    var KTSignupGeneral = function () {
+        var e, t, a, s, r = function () {
+            return 100 === s.getScore();
+        };
+        return {
+            init: function () {
+                e = document.querySelector("#kt_sign_up_form"), t = document.querySelector("#kt_sign_up_submit"),
+                    s = KTPasswordMeter.getInstance(e.querySelector('[data-kt-password-meter="true"]')),
+                    a = FormValidation.formValidation(e, {
+                    fields: {
+                        "UserName": {validators: {notEmpty: {message: "User Name  is required"}}},
+                        email: {
+                            validators: {
+                                notEmpty: {message: "Email address is required"},
+                                emailAddress: {message: "The value is not a valid email address"}
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {message: "The password is required"}, callback: {
+                                    message: "Please enter valid password", callback: function (e) {
+                                        if (e.value.length > 0)
+                                            return r();
+                                    }
+                                }
+                            }
+                        },
+                        "confirm-password": {
+                            validators: {
+                                notEmpty: {message: "The password confirmation is required"},
+                                identical: {
+                                    compare: function () {
+                                        return e.querySelector('[name="password"]').value;
+                                    }, message: "The password and its confirm are not the same"
+                                }
+                            }
+                        },
+                        toc: {validators: {notEmpty: {message: "You must accept the terms and conditions"}}}
+                    },
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger({event: {password: !1}}),
+                        bootstrap: new FormValidation.plugins.Bootstrap5({
+                            rowSelector: ".fv-row",
+                            eleInvalidClass: "",
+                            eleValidClass: ""
+                        })
+                    }
+                }), t.addEventListener("click", (function (r) {
+                    r.preventDefault(), a.revalidateField("password"), a.validate().then((function (a) {
+                        "Valid" == a ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
+
+                            t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
+                                text: "You have successfully reset your password!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {confirmButton: "btn btn-primary"}
+                            }).then((function (t) {
+                                t.isConfirmed && (e.reset(), s.reset());
+                            }));
+                        }), 1500)) : Swal.fire({
+                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {confirmButton: "btn btn-primary"}
+                        });
+                    }));
+                })), e.querySelector('input[name="password"]').addEventListener("input", (function () {
+                    this.value.length > 0 && a.updateFieldStatus("password", "NotValidated");
+                }));
+            }
+        };
+    }();
+    KTUtil.onDOMContentLoaded((function () {
+        KTSignupGeneral.init();
+    }));
+}
+
+</script>*@
+    <!--begin::Page Custom Javascript(used by this page)-->
+    <!--
+        
+    <script src="~/assets/js/custom/authentication/sign-up/general.js"></script>
+        -->
     <!--end::Page Custom Javascript-->
     <!--end::Javascript-->
 }

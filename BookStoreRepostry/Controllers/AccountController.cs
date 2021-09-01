@@ -5,17 +5,19 @@ using System.Threading.Tasks;
 using BookStoreRepostry.Models;
 using BookStoreRepostry.Models.Repositores;
 using BookStoreRepostry.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreRepostry.Controllers
 {
-    public class AuthController : Controller
+    [AllowAnonymous]
+    public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
 
-        public AuthController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -43,7 +45,7 @@ namespace BookStoreRepostry.Controllers
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Dashboard");
 
                     }
                     else
@@ -54,7 +56,7 @@ namespace BookStoreRepostry.Controllers
                             ModelState.AddModelError("", error.Description);
 
                         }
-                        return View();
+                        return View("Register");
 
                     }
                  
@@ -64,10 +66,10 @@ namespace BookStoreRepostry.Controllers
                 }
                 catch
                 {
-                    return View();
+                    return View("Register");
                 }
             }
-            return View();
+            return View("Register");
         }
         
 
@@ -78,42 +80,39 @@ namespace BookStoreRepostry.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
 
-                try
-                {
-                    // TODO: Add insert logic here
+                // TODO: Add insert logic here
 
-                    var user = new IdentityUser() { Email = loginViewModel.Email };
-                    var result = await userManager.CreateAsync(user, loginViewModel.Password);
+                    var result = await signInManager.PasswordSignInAsync(loginViewModel.UserName, 
+                        loginViewModel.Password,loginViewModel.RememberMy,false);
 
                     if (result.Succeeded)
                     {
-                        await signInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Index", "Home");
-
+                        return RedirectToAction("Index", "Dashboard");
                     }
                     else
                     {
-
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-
-                        }
-                        return View();
+                            ModelState.AddModelError("","invaid Login Attempt");       
+                    
 
                     }
                 }
-                catch
-                {
-                    return View();
-                }
-            }
-            return View();
+
+        
+            return View(loginViewModel);
+        }
+        public async Task<IActionResult> LogOut()
+        {
+         
+             
+           await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+
+
         }
     }
 }

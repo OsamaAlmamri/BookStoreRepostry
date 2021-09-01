@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace BookStoreRepostry
 {
@@ -28,8 +30,20 @@ namespace BookStoreRepostry
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+
+            services.AddMvc(config=>
+            {
+                //to add auth to all project
+                var poilcy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                config.Filters.Add(new AuthorizeFilter(poilcy));
+            });
+
+
+
             /* services.AddSingleton<IBookrepository<Author>, AuthorRepostry>();
              services.AddSingleton<IBookrepository<Book>, BookRepostry>();*/
+         //    services.use
             services.AddScoped<IBookrepository<Author>, AuthorDBRepostry>();
             services.AddScoped<IBookrepository<Book>, BookDBRepostry>();
             services.AddDbContext<BookStoreDBContext>(options =>
@@ -38,8 +52,15 @@ namespace BookStoreRepostry
             });
 
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookStoreDBContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+            }).AddEntityFrameworkStores<BookStoreDBContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

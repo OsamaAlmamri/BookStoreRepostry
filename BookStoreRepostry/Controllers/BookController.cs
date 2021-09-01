@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using BookStoreRepostry.Models;
 using BookStoreRepostry.Models.Repositores;
 using BookStoreRepostry.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreRepostry.Controllers
 {
+
     public class BookController : Controller
     {
         private readonly IBookrepository<Book> bookRepostry;

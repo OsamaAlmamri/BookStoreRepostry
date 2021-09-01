@@ -6,9 +6,11 @@ using BookStoreRepostry.Models;
 using BookStoreRepostry.Models.Repositores;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStoreRepostry.Controllers
 {
+    
     public class AuthorController : Controller
     {
         private readonly IBookrepository<Author> authorRepostrt;
