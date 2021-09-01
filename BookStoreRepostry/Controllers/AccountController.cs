@@ -17,7 +17,7 @@ namespace BookStoreRepostry.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -27,7 +27,7 @@ namespace BookStoreRepostry.Controllers
             var model = new RegisterViewModel();
             return View(model);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckRegister(RegisterViewModel registerViewModel)
@@ -40,7 +40,7 @@ namespace BookStoreRepostry.Controllers
                     // TODO: Add insert logic here
 
                     var user = new IdentityUser() { Email = registerViewModel.Email, UserName = registerViewModel.UserName };
-                    var result=await  userManager.CreateAsync(user, registerViewModel.Password);
+                    var result = await userManager.CreateAsync(user, registerViewModel.Password);
 
                     if (result.Succeeded)
                     {
@@ -50,8 +50,8 @@ namespace BookStoreRepostry.Controllers
                     }
                     else
                     {
-                       
-                        foreach ( var error in result.Errors)
+
+                        foreach (var error in result.Errors)
                         {
                             ModelState.AddModelError("", error.Description);
 
@@ -59,7 +59,7 @@ namespace BookStoreRepostry.Controllers
                         return View("Register");
 
                     }
-                 
+
                     //                    registerViewModel.add(author);
 
                     //  return RedirectToAction(nameof(Details), new { id = author.Id });
@@ -71,7 +71,7 @@ namespace BookStoreRepostry.Controllers
             }
             return View("Register");
         }
-        
+
 
 
         public IActionResult Login()
@@ -80,36 +80,38 @@ namespace BookStoreRepostry.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
 
                 // TODO: Add insert logic here
 
-                    var result = await signInManager.PasswordSignInAsync(loginViewModel.UserName, 
-                        loginViewModel.Password,loginViewModel.RememberMy,false);
+                var result = await signInManager.PasswordSignInAsync(loginViewModel.UserName,
+                    loginViewModel.Password, loginViewModel.RememberMy, false);
 
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Dashboard");
-                    }
-                    else
-                    {
-                            ModelState.AddModelError("","invaid Login Attempt");       
-                    
-
-                    }
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(returnUrl))
+                        return Redirect(returnUrl);
+                    return RedirectToAction("Index", "Dashboard");
                 }
+                else
+                {
+                    ModelState.AddModelError("", "invaid Login Attempt");
 
-        
+
+                }
+            }
+
+
             return View(loginViewModel);
         }
         public async Task<IActionResult> LogOut()
         {
-         
-             
-           await signInManager.SignOutAsync();
+
+
+            await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
 
 
