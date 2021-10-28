@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BookStoreRepostry.Models;
+using StaticData.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BookStoreRepostry.Controllers
+namespace StaticData.Controllers
 {
     [AllowAnonymous]
     public class HomeController : Controller
@@ -22,7 +22,7 @@ namespace BookStoreRepostry.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("../Dashboard/Index");
         }
 
         public IActionResult Privacy()

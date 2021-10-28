@@ -9,9 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using BookStoreRepostry.Models;
+using StaticData.Models;
 
-namespace BookStoreRepostry
+namespace StaticData
 {
     public class Program
     {
@@ -30,6 +30,7 @@ namespace BookStoreRepostry
             {
                 var db = scope.ServiceProvider.GetRequiredService<BookStoreDBContext>();
                 db.Database.Migrate();
+
             }
         }
 

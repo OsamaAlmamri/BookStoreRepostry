@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookStoreRepostry.Models.Repositores
+namespace StaticData.Models.Repositores
 {
   public  interface IBookrepository<TEntity>
     {

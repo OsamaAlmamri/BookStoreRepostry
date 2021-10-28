@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BookStoreRepostry.Models;
-using BookStoreRepostry.Models.Repositores;
-using BookStoreRepostry.ViewModels;
+using StaticData.Models;
+using StaticData.Models.Repositores;
+using StaticData.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookStoreRepostry.Controllers
+namespace StaticData.Controllers
 {
     [AllowAnonymous]
     public class AccountController : Controller
@@ -100,13 +100,13 @@ namespace BookStoreRepostry.Controllers
                 {
                     ModelState.AddModelError("", "invaid Login Attempt");
 
-
                 }
             }
 
 
             return View(loginViewModel);
         }
+        [HttpGet]
         public async Task<IActionResult> LogOut()
         {
 

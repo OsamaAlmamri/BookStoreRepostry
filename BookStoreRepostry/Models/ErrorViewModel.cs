@@ -1,6 +1,6 @@
 using System;
 
-namespace BookStoreRepostry.Models
+namespace StaticData.Models
 {
     public class ErrorViewModel
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStoreRepostry", "BookStoreRepostry\BookStoreRepostry.csproj", "{50FD8127-FFD5-448C-BDE1-6A159DB31DE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaticData", "BookStoreRepostry\StaticData.csproj", "{50FD8127-FFD5-448C-BDE1-6A159DB31DE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

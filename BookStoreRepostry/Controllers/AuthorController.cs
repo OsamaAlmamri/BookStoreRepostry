@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BookStoreRepostry.Models;
-using BookStoreRepostry.Models.Repositores;
+using StaticData.Models;
+using StaticData.Models.Repositores;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BookStoreRepostry.Controllers
+namespace StaticData.Controllers
 {
     
     public class AuthorController : Controller

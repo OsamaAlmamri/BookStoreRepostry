@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BookStoreRepostry.Models;
-using BookStoreRepostry.Models.Repositores;
-using BookStoreRepostry.ViewModels;
+using StaticData.Models;
+using StaticData.Models.Repositores;
+using StaticData.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookStoreRepostry.Controllers
+namespace StaticData.Controllers
 {
 
     public class BookController : Controller

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookStoreRepostry.Models
+namespace StaticData.Models
 {
     public class BookStoreDBContext:IdentityDbContext
     {
